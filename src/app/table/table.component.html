@@ -2,7 +2,7 @@
 <app-view-actions
   (actionClick)="handleMainAction($event)"
   *ngIf="hasViewActions"
-  [actions]="data.viewActions"
+  [actions]="data().viewActions"
 >
 </app-view-actions>
 
@@ -14,11 +14,7 @@
         <!-- MULTISELECT CHECKBOX -->
         <div *ngIf="hasViewActions" class="grid-cell checkbox-cell">
           <label>
-            <input
-              (change)="toggleAll($event)"
-              class="row-checkbox"
-              type="checkbox"
-            />
+            <input (change)="toggleAll($any($event.target).checked)" type="checkbox"/>
           </label>
         </div>
 
@@ -34,7 +30,7 @@
       </div>
 
       <!-- ================= BODY ================= -->
-      <div *ngFor="let row of data.rows" class="grid-row">
+      <div *ngFor="let row of data().rows" class="grid-row">
         <!-- ROW CHECKBOX -->
 
         <div *ngIf="hasViewActions" class="grid-cell checkbox-cell">
@@ -75,7 +71,7 @@
           <div class="button-actions">
             <button
               (click)="handleDetailsAction(action, row)"
-              *ngFor="let action of data.detailsActions"
+              *ngFor="let action of data().detailsActions"
               color="primary"
               mat-button
             >

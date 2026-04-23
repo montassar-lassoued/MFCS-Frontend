@@ -1,27 +1,29 @@
-<div class="subview-container" @slideDown>
+@if (row) {
+<div @slideDown class="subview-container">
   <div class="subview-header">
-    <h3>Details</h3>
+    <mat-icon color="primary">analytics</mat-icon>
+    <h3>Datensatz Details</h3>
+    <span class="spacer"></span>
+    <div class="badge">ID: {{ row.id || 'N/A' }}</div>
   </div>
 
   <div class="subview-grid">
-    <div class="field" *ngFor="let key of row | keyvalue">
-      <label>{{ key.key }}</label>
+    @for (field of fields; track field.key) {
+    <div class="detail-item">
+      <label>{{ field.key }}</label>
 
-      <!-- Boolean -->
-      <ng-container
-        *ngIf="key.value === true || key.value === false; else text"
-      >
-        <label>
-          <input type="checkbox" [checked]="key.value" disabled />
-        </label>
-      </ng-container>
-
-      <!-- Text -->
-      <ng-template #text>
-        <label>
-          <input type="text" [value]="key.value" readonly />
-        </label>
-      </ng-template>
+      <div class="value-container">
+        @if (field.isBool) {
+        <mat-icon [class.text-danger]="!field.value" [class.text-success]="field.value">
+          {{ field.value ? 'check_circle' : 'cancel' }}
+        </mat-icon>
+        <span>{{ field.value ? 'Aktiv' : 'Inaktiv' }}</span>
+        } @else {
+        <span class="text-value">{{ field.value || '---' }}</span>
+        }
+      </div>
     </div>
+    }
   </div>
 </div>
+}

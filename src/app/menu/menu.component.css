@@ -1,49 +1,56 @@
 .side-menu {
   width: 200px;
-  border-right: 0px solid #ccc;
   background: #ececec;
-  padding: 5px;
+  padding: 8px;
   height: 100%;
-}
-.menu-item.child {
-  font-size: 14px;
-  padding-left: 20px;
-}
-.menu-item {
-  padding: 5px;
-  margin-bottom: 3px;
-  clip-path: polygon(0% 0%, 85% 0%, 100% 100%, 0% 100%);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition:
-    transform 0.1s,
-    box-shadow 0.1s;
-}
-.menu-item:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-.menu-item {
-  text-decoration: none;
-  color: #444;
-  font-weight: normal;
-  display: block;
-}
-.arrow {
-  display: inline-block;
-  justify-content:flex-end;
-  float: right;
-  width: 10px;
-  height: 10px;
-  border-right: 2px solid #333;
-  border-bottom: 2px solid #333;
-  transform: rotate(45deg);
-  transition: transform 0.2s;
-  margin-right: 35px;
-  vertical-align: middle;
+  overflow-y: auto;
+  box-sizing: border-box;
 }
 
-/* gedreht für nach oben */
+.menu-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+  margin-bottom: 5px;
+  cursor: pointer;
+  color: #333;
+  /* Beibehalten deines Designs mit Optimierung */
+  clip-path: polygon(0% 0%, 90% 0%, 100% 100%, 0% 100%);
+  transition: all 0.2s ease-in-out;
+  user-select: none;
+}
+
+.menu-item:hover {
+  filter: brightness(0.9);
+  transform: translateX(3px);
+}
+
+.menu-item.child {
+  font-size: 0.9rem;
+  padding-left: 25px;
+  margin-left: 10px;
+  /* Leicht anderes Polygon für Kinder zur optischen Abgrenzung */
+  clip-path: polygon(0% 0%, 95% 0%, 100% 100%, 0% 100%);
+}
+
+.arrow {
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid #555;
+  border-bottom: 2px solid #555;
+  transform: rotate(45deg);
+  transition: transform 0.3s ease;
+  margin-right: 10px;
+}
+
 .arrow.expanded {
   transform: rotate(-135deg);
-  display: inline-block;
+}
+
+.children-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: 10px;
 }
