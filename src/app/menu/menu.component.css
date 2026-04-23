@@ -1,34 +1,36 @@
 .side-menu {
   width: 200px;
   background: #ececec;
-  padding: 5px;
+  padding: 8px;
   height: 100%;
   overflow-y: auto;
+  box-sizing: border-box;
 }
 
 .menu-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px 12px;
-  margin-bottom: 4px;
+  padding: 10px 15px;
+  margin-bottom: 5px;
   cursor: pointer;
-  color: #444;
-  /* Dein cooles Polygon-Design */
-  clip-path: polygon(0% 0%, 92% 0%, 100% 100%, 0% 100%);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  transition: transform 0.1s ease, filter 0.2s;
+  color: #333;
+  /* Beibehalten deines Designs mit Optimierung */
+  clip-path: polygon(0% 0%, 90% 0%, 100% 100%, 0% 100%);
+  transition: all 0.2s ease-in-out;
+  user-select: none;
 }
 
 .menu-item:hover {
-  transform: translateX(4px);
-  filter: brightness(0.95);
+  filter: brightness(0.9);
+  transform: translateX(3px);
 }
 
 .menu-item.child {
-  font-size: 13px;
+  font-size: 0.9rem;
   padding-left: 25px;
-  margin-left: 5px;
+  margin-left: 10px;
+  /* Leicht anderes Polygon für Kinder zur optischen Abgrenzung */
   clip-path: polygon(0% 0%, 95% 0%, 100% 100%, 0% 100%);
 }
 
@@ -39,7 +41,7 @@
   border-bottom: 2px solid #555;
   transform: rotate(45deg);
   transition: transform 0.3s ease;
-  margin-right: 15px;
+  margin-right: 10px;
 }
 
 .arrow.expanded {
@@ -50,5 +52,5 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }

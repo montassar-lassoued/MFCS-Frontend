@@ -1,9 +1,10 @@
-<div class="side-menu">
+<nav aria-label="Hauptnavigation" class="side-menu">
   @for (m of menues; track m.id) {
 
   @if (m.menuTyp === 'group') {
   <div
     (click)="toggle(m)"
+    [attr.aria-expanded]="m.expanded"
     [style.background]="'linear-gradient(to bottom, #ffffff 0%, ' + m.color + ' 100%)'"
     class="menu-item group-header"
     role="button"
@@ -39,6 +40,6 @@
   }
 
   } @empty {
-  <p class="no-data">Keine Menüeinträge vorhanden.</p>
+  <div class="no-data">Menü wird geladen oder ist leer...</div>
   }
-</div>
+</nav>
