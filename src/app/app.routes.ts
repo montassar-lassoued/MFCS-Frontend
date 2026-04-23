@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { AuthGuard } from './guard/auth.guard';
-import { MenuResolver } from './menu/menu.resolver';
+import { menuResolver } from './menu/menu.resolver';
 
 export const routes: Routes = [
   {
@@ -14,7 +14,7 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./home/home.component').then(m => m.HomeComponent),
     canActivate: [AuthGuard],
-    resolve: { menues: MenuResolver },
+    resolve: { menues: menuResolver },
     children: [
       {
         path: 'table/:menuName',
