@@ -21,40 +21,29 @@ import { AuthService } from '../services/auth.service';
   ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
-  // OnPush sorgt dafür, dass Angular die Komponente nur bei Signal-Änderungen prüft
+  // Performance-Boost: Komponente wird nur bei Signal-Änderungen gerendert
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeComponent implements OnInit {
-  // Inject-Pattern (moderner als Konstruktor-Injection)
   private menuService = inject(MenuService);
   private dataService = inject(DataService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private authService = inject(AuthService);
 
-  // States als Signals
+  // States als reaktive Signals
   menues = signal<BrowserMenu[]>([]);
   userMenuOpen = signal(false);
   errorMessage = signal<string | null>(null);
 
   ngOnInit() {
-    // 1. Daten direkt aus dem Resolver holen (Performance!)
+    // Daten aus dem Resolver beziehen statt neuem HTTP-Call
     const resolvedMenus = this.route.snapshot.data['menues'];
 
     if (resolvedMenus) {
       this.menues.set(resolvedMenus);
       this.checkInitialChildRoute();
-    } else {
-      // Fallback, falls der Resolver fehlschlägt
-      this.loadMenusFromService();
     }
-  }
-
-  private loadMenusFromService() {
-    this.menuService.getMenu().subscribe({
-      next: (m) => this.menues.set(m),
-      error: () => this.errorMessage.set('Menü konnte nicht geladen werden.')
-    });
   }
 
   private checkInitialChildRoute() {
@@ -63,9 +52,7 @@ export class HomeComponent implements OnInit {
 
     if (menuID) {
       const menuItem = this.findMenuByID(menuID);
-      if (menuItem) {
-        this.loadMenuDetails(menuItem);
-      }
+      if (menuItem) this.loadMenuDetails(menuItem);
     }
   }
 
@@ -103,7 +90,7 @@ export class HomeComponent implements OnInit {
   }
 
   changeLanguage(lang: string) {
-    console.log('Sprache geändert auf:', lang);
+    console.log('Sprache:', lang);
     this.userMenuOpen.set(false);
   }
 

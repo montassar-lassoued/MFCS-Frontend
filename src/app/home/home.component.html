@@ -1,12 +1,8 @@
 <div class="container">
-
   <header class="top-title">
     IntraConnect
-
     <div class="top-menu">
-      <button (click)="toggleUserMenu()"
-              aria-label="Benutzermenü"
-              class="menu-button">
+      <button (click)="toggleUserMenu()" class="menu-button">
         <span class="material-icons">account_circle</span>
       </button>
 
@@ -27,8 +23,6 @@
       (menuClick)="onMenuClick($event)"
       [menues]="menues()">
     </app-menu>
-    } @else if (errorMessage()) {
-    <p class="error">{{ errorMessage() }}</p>
     }
   </aside>
 
