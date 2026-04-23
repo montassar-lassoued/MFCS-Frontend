@@ -1,36 +1,43 @@
 import { Routes } from '@angular/router';
-import { LoginComponent } from './login/login.component';
-import { HomeComponent } from './home/home.component';
 import { AuthGuard } from './guard/auth.guard';
-import { TableComponent } from './table/table.component';
-import { CardComponent } from './card/card.component';
 import { MenuResolver } from './menu/menu.resolver';
-import { TableDetailsComponent } from './subView/table-details/table-details.component';
-import { VisuViewerComponent } from './visu-viewer/visu-viewer.component';
 
 export const routes: Routes = [
   {
     path: 'login',
-    component: LoginComponent,
+    // Login wird meistens als Erstes gebraucht, aber Lazy Loading schadet nie
+    loadComponent: () =>
+      import('./login/login.component').then(m => m.LoginComponent),
   },
   {
     path: 'home',
-    component: HomeComponent,
+    loadComponent: () =>
+      import('./home/home.component').then(m => m.HomeComponent),
     canActivate: [AuthGuard],
     resolve: { menues: MenuResolver },
     children: [
       {
         path: 'table/:menuName',
-        component: TableComponent,
+        loadComponent: () =>
+          import('./table/table.component').then(m => m.TableComponent),
         children: [
           {
             path: ':id',
-            component: TableDetailsComponent, // SubView
+            loadComponent: () =>
+              import('./subView/table-details/table-details.component').then(m => m.TableDetailsComponent),
           },
         ],
       },
-      { path: 'card/:menuName', component: CardComponent },
-      { path: 'visualization/:menuName', component: VisuViewerComponent },
+      {
+        path: 'card/:menuName',
+        loadComponent: () =>
+          import('./card/card.component').then(m => m.CardComponent)
+      },
+      {
+        path: 'visualization/:menuName',
+        loadComponent: () =>
+          import('./visu-viewer/visu-viewer.component').then(m => m.VisuViewerComponent)
+      },
     ],
   },
   {
@@ -38,4 +45,9 @@ export const routes: Routes = [
     redirectTo: 'login',
     pathMatch: 'full',
   },
+  // Ein Catch-all für 404 Fehler
+  {
+    path: '**',
+    redirectTo: 'login'
+  }
 ];
