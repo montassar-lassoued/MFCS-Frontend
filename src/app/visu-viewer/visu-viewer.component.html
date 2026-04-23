@@ -1,0 +1,43 @@
+<div (mousedown)="startPan($event)"
+     (mouseleave)="endPan()"
+     (mousemove)="doPan($event)"
+     (mouseup)="endPan()"
+     (wheel)="onWheel($event)"
+     class="visu-container">
+  <svg class="visu-svg" viewBox="0 0 2000 1000">
+    <g [style.transform]="transformStyle" style="transform-origin: 0 0;">
+      <g *ngFor="let a of arrows">
+        <path [attr.d]="generatePath(a)"
+              class="conveyor-base"/>
+
+        <path #conveyorPath
+              [attr.d]="generatePath(a)"
+              [attr.id]="a.id"
+              [class]="'conveyor type-' + (a.type || 'belt')"/>
+
+        <path *ngIf="a.speed > 0"
+              [attr.d]="generatePath(a)"
+              [style.animation-duration]="(2 / a.speed) + 's'"
+              class="flow-line"/>
+      </g>
+
+      <g *ngFor="let r of rects">
+        <rect [attr.fill]="getStationColor(r.id)" [attr.height]="r.height"
+              [attr.width]="r.width" [attr.x]="r.x"
+              [attr.y]="r.y"
+              class="station"/>
+        <text [attr.x]="r.x + r.width / 2"
+              [attr.y]="r.y + r.height / 2"
+              class="station-text">
+          {{ r.name }}
+        </text>
+      </g>
+
+      <g *ngFor="let lu of loadUnits"
+         [attr.transform]="'translate(' + getLUPosition(lu).x + ',' + getLUPosition(lu).y + ')'">
+        <rect class="lu-box" height="24" rx="3" width="24" x="-12" y="-12"/>
+        <text class="lu-label" y="-18">{{ lu.id }}</text>
+      </g>
+    </g>
+  </svg>
+</div>

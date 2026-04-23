@@ -1,0 +1,101 @@
+
+body {
+  margin: 0;
+  background: #f0f0f0;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 211px 1fr;
+  grid-template-rows: 70px 1fr;
+  grid-template-areas:
+    "header header"
+    "menu content";
+  height: 100vh;
+}
+
+.top-title {
+  grid-column: 1 / span 2;
+  background: #ddd;
+  text-align: center;
+  font-size: 28px;
+  font-weight: bold;
+  padding-top: 15px;
+  border-bottom: 2px solid #ccc;
+}
+
+.top-menu {
+  position: absolute;
+  right: 200px;
+  top: 5%;
+  transform: translateY(-50%);
+    z-index: 1000; /* ganz wichtig: über allen anderen Elementen */
+}
+
+.menu-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 28px;
+}
+
+.dropdown {
+  position:  absolute;
+   right: 0;
+   top: 100%;
+   background: white;
+   border: 1px solid #ccc;
+   border-radius: 4px;
+   list-style:  none;
+   margin: 5px 0 0 0;
+   padding: 0.5rem 0;
+   min-width: 150px;
+   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+   font-size: 15px;
+   font-weight:  normal;
+     z-index: 1001; /* ganz wichtig: über allen anderen Elementen */
+}
+
+.dropdown li {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
+.dropdown li:hover {
+  background: #eee;
+}
+
+.divider {
+  border-top: 1px solid #ccc;
+  margin: 0.5rem 0;
+}
+
+.side-menu {
+  grid-area: menu;
+  overflow: hidden; /* Menü bleibt fest */
+  border-right: 1px solid #e5e7eb;
+}
+.content {
+  grid-area: content;
+  display: grid;
+  grid-template-rows: auto 1fr; /* FIX + SCROLL */
+  overflow: hidden;
+}
+
+/*.content {
+grid-area: content;
+  overflow-y: auto;
+  padding: 30px;
+}*/
+.content-fix {
+  background: white;
+  border-bottom: 1px solid #e5e7eb;
+  z-index: 2;
+}
+
+
+.content-scroll {
+  overflow-y: auto;
+  padding: 30px;
+}
+

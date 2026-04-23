@@ -1,0 +1,29 @@
+.view-actions {
+ display: flex;
+  gap: 10px;        /* Abstand zwischen Buttons */
+  justify-content: flex-end; /* Rechts ausrichten */
+  margin-bottom: 10px;
+}
+
+.view-actions button {
+  --background-color: #f5f7fa;
+   background: linear-gradient(13deg, #f5f7fa, #e5e7eb);
+   color: #1f2937;
+   font-weight: 500;
+   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.4);
+   transform: perspective(600px) rotateX(10deg);
+   border: 0.5px solid #d1d5db;
+}
+
+.view-actions button:hover {
+  background-color: #e5e7eb;
+}
+
+.view-actions mat-icon {
+  margin-right: 20px;
+  font-size: 18px;
+}
+/*.view-actions {
+  padding: 8px 0;
+  border-bottom: 1px solid #e5e7eb;
+}*/

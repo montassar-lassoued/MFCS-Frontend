@@ -1,0 +1,40 @@
+<div class="side-menu">
+  <ng-container *ngFor="let m of menues">
+    <!-- GRUPPE (aufklappbar) -->
+    <div
+      (click)="toggle(m)"
+      *ngIf="m.menuTyp === 'group'"
+      [ngStyle]="{ background: 'linear-gradient(to bottom, #ffffff 0%, ' + m.color + ' 100%)' }"
+      class="menu-item"
+      style="cursor: pointer; padding: 5px"
+    >
+      {{ m.name }}
+      <span [class.expanded]="m.expanded" class="arrow"></span>
+      <!--      <span class="arrow">{{ m.expanded ? '▲' : '▼' }}</span>-->
+    </div>
+
+    <!-- KINDER EINER GRUPPE -->
+    <div *ngIf="m.menuTyp === 'group' && m.expanded">
+      <div
+        (click)="onItemClick(c, $event)"
+        *ngFor="let c of m.children"
+        [ngStyle]="{ background: 'linear-gradient(to bottom, #ffffff 0%, ' + c.color + ' 100%)' }"
+        class="menu-item child"
+        style="padding: 5px 20px; cursor: pointer"
+      >
+        {{ c.name }}
+      </div>
+    </div>
+
+    <!-- NORMALES ITEM -->
+    <div
+      (click)="onItemClick(m, $event)"
+      *ngIf="m.menuTyp === 'item'"
+      [ngStyle]="{ background: 'linear-gradient(to bottom, #ffffff 0%, ' + m.color + ' 100%)' }"
+      class="menu-item"
+      style="cursor: pointer; padding: 5px"
+    >
+      {{ m.name }}
+    </div>
+  </ng-container>
+</div>

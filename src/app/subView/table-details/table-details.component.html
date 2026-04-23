@@ -1,0 +1,27 @@
+<div class="subview-container" @slideDown>
+  <div class="subview-header">
+    <h3>Details</h3>
+  </div>
+
+  <div class="subview-grid">
+    <div class="field" *ngFor="let key of row | keyvalue">
+      <label>{{ key.key }}</label>
+
+      <!-- Boolean -->
+      <ng-container
+        *ngIf="key.value === true || key.value === false; else text"
+      >
+        <label>
+          <input type="checkbox" [checked]="key.value" disabled />
+        </label>
+      </ng-container>
+
+      <!-- Text -->
+      <ng-template #text>
+        <label>
+          <input type="text" [value]="key.value" readonly />
+        </label>
+      </ng-template>
+    </div>
+  </div>
+</div>

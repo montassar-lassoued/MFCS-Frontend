@@ -1,0 +1,51 @@
+.dialog-root {
+  background: #fff;
+  padding: 24px;
+}
+
+.dialog-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+mat-icon {
+  font-size: 26px;
+  width: 26px;
+  height: 26px;
+}
+
+.info {
+  color: #1976d2;
+}
+.success {
+  color: #2e7d32;
+}
+.warning {
+  color: #ed6c02;
+}
+.error {
+  color: #d32f2f;
+}
+.question {
+  color: #6a1b9a;
+}
+
+.dialog-content {
+  font-size: 1rem;
+  color: #444;
+  margin-bottom: 20px;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}

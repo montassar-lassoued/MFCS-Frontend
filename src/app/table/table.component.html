@@ -1,0 +1,98 @@
+<!-- MAIN ACTION BUTTONS -->
+<app-view-actions
+  (actionClick)="handleMainAction($event)"
+  *ngIf="hasViewActions"
+  [actions]="data.viewActions"
+>
+</app-view-actions>
+
+<div class="grid-table-wrapper">
+  <div class="grid-table-scroll">
+    <div *ngIf="columns.length > 0" class="grid-table">
+      <!-- ================= HEADER ================= -->
+      <div class="grid-row header">
+        <!-- MULTISELECT CHECKBOX -->
+        <div *ngIf="hasViewActions" class="grid-cell checkbox-cell">
+          <label>
+            <input
+              (change)="toggleAll($event)"
+              class="row-checkbox"
+              type="checkbox"
+            />
+          </label>
+        </div>
+
+        <!-- DATA COLUMNS -->
+        <div *ngFor="let col of columns" class="grid-cell">
+          {{ col.field }}
+        </div>
+
+        <!-- ACTIONS HEADER -->
+        <div *ngIf="hasDetailsActions" class="grid-cell actions-header">
+          Actions
+        </div>
+      </div>
+
+      <!-- ================= BODY ================= -->
+      <div *ngFor="let row of data.rows" class="grid-row">
+        <!-- ROW CHECKBOX -->
+
+        <div *ngIf="hasViewActions" class="grid-cell checkbox-cell">
+          <label>
+            <input
+              [(ngModel)]="row._selected"
+              class="row-checkbox"
+              type="checkbox"
+            />
+          </label>
+        </div>
+
+        <!-- DATA CELLS -->
+        <div *ngFor="let col of columns" class="grid-cell">
+          <!-- CHECKBOX / BOOLEAN -->
+          <label>
+            <input
+              *ngIf="col.type === 'CHECKBOX'"
+              [(ngModel)]="row[col.field]"
+              [disabled]="true"
+              type="checkbox"
+            />
+            <!--                  !col.editable-->
+          </label>
+
+          <!-- TEXT / NUMBER -->
+          <span
+            *ngIf="col.type !== 'CHECKBOX'"
+            [title]="row[col.field]"
+            class="truncate"
+          >
+          {{ row[col.field] }}
+        </span>
+        </div>
+
+        <!-- DETAILS ACTIONS -->
+        <div *ngIf="hasDetailsActions" class="grid-cell actions-cell">
+          <div class="button-actions">
+            <button
+              (click)="handleDetailsAction(action, row)"
+              *ngFor="let action of data.detailsActions"
+              color="primary"
+              mat-button
+            >
+              <mat-icon>{{ action.icon }}</mat-icon>
+              {{ action.label }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EMPTY STATE -->
+  <div *ngIf="columns.length === 0" class="empty-state">
+    Keine Daten vorhanden
+  </div>
+</div>
+
+<!-- ================= DETAILS VIEW ================= -->
+<app-table-details *ngIf="selectedRow" [row]="selectedRow"></app-table-details>

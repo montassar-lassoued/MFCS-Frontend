@@ -1,0 +1,108 @@
+
+.view-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.view-scroll {
+  flex: 1;
+  overflow-y: auto;
+}
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 4px;
+}
+
+/* Checkbox nicht schrumpfen */
+.card-checkbox {
+  flex-shrink: 0;
+}
+
+/* Titel sauber umbrechen */
+.card-title {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.clickable {
+  cursor: pointer;
+}
+.card-container {
+  display: flex;
+  flex-wrap: wrap; /* wichtig: neue Linie bei Platzmangel */
+  gap: 16px; /* Abstand zwischen Cards */
+  justify-content: flex-start; /* linksbündig */
+  gap: 15px;
+}
+
+.card {
+  flex: 0 1 300px; /* minimale Breite 300px, wächst nicht über */
+  width: 300px;
+  background-color: #e3f2fd; /* Hellblau */
+  color: black;
+  border-radius: 12px;
+  padding-top: 16px;
+  padding-right: 16px;
+  padding-bottom: 1px;
+  padding-left: 16px;
+}
+.custom-divider {
+  background-color: #ff0000; /* Rot */
+  height: 0.2px; /* Dicke */
+  margin-bottom: 10px;
+}
+.card-content {
+  margin-top: 10px; /* Abstand zum Divider */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.card-content div {
+  margin-bottom: 10px; /* Abstand zwischen dynamischen Zeilen */
+}
+mat-card-actions button {
+  margin-right: 8px;
+}
+.mat-mdc-card-content {
+  display: block;
+  padding-top: 0px;
+  padding-right: 16px;
+  padding-bottom: 20px;
+  padding-left: 16px;
+}
+.button-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 0px;
+  margin-right: 0px;
+  justify-content: end;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.button-actions button {
+  background-color: #f5f7fa; /* neutrale, helle Farbe */
+  color: #1f2937; /* dunkles Grau (gut lesbar) */
+  font-weight: 500;
+  box-shadow: black; /* cleaner als Standard-Raised */
+  border: 1px solid #d1d5db;
+}
+
+.button-actions button:hover {
+  background-color: #e5e7eb;
+}
+
+.button-actions mat-icon {
+  margin-right: 0px;
+  font-size: 15px;
+}
+.card-select-all label {
+  color: black !important;
+}

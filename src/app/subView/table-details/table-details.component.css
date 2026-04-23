@@ -1,0 +1,48 @@
+.subview-container {
+  position: fixed;
+  bottom: 0;
+  left: 212px;
+  right: 16px;
+
+  max-height: 40vh;
+  overflow-y: auto;
+
+  background-color: #fafafa;
+  border-top: 2px solid #ccc;
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.15);
+
+  padding: 16px;
+  z-index: 1000;
+}
+
+.subview-header {
+  margin-bottom: 12px;
+}
+
+.subview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+}
+
+.field label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #444;
+  margin-bottom: 4px;
+}
+
+.field input[type="text"] {
+  padding: 6px 8px;
+  background-color: #f3f3f3;
+  border: 1px solid #ccc;
+}
+
+.field input[type="checkbox"] {
+  margin-top: 6px;
+}

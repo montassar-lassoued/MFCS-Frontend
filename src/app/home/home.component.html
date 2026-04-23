@@ -1,0 +1,41 @@
+<div class="container">
+
+  <div class="top-title">
+    IntraConnect
+
+    <!-- Rechtsbündiges Menü-Icon -->
+    <div class="top-menu">
+      <button (click)="toggleUserMenu()" aria-label="Benutzermenü" class="menu-button">
+        <span class="material-icons">account_circle</span>
+      </button>
+
+      <ul *ngIf="userMenuOpen" class="dropdown">
+        <li (click)="changeLanguage('de')">Sprache: DE</li>
+        <li (click)="changeLanguage('en')">Sprache: EN</li>
+        <li class="divider"></li>
+        <li (click)="logout()">Logout</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Linkes Menü -->
+  <div class="side-menu">
+    <app-menu
+      (menuClick)="onMenuClick($event)"
+      *ngIf="menues.length"
+      [menues]="menues"
+    >
+    </app-menu>
+  </div>
+
+  <!-- Content -->
+  <div class="content">
+    <div class="content-fix">
+      <router-outlet name="actions"></router-outlet>
+    </div>
+
+    <div *ngIf="menues.length" class="content-scroll">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

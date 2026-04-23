@@ -1,0 +1,67 @@
+.grid-table-wrapper {
+  max-height: 700px;
+  overflow-y: auto;
+}
+
+.grid-table-scroll {
+  flex: 1;            /* füllt den Container */
+  overflow-y: auto;   /* Scroll aktiv */
+  max-height: 100%;   /* optional, falls Wrapper größer wird */
+}
+
+.grid-table {
+  display: table;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.grid-row {
+  display: table-row;
+}
+
+.grid-cell {
+  display: table-cell;
+  padding: 10px;
+  border-bottom: 1px solid #514e4e99;
+  vertical-align: middle;
+  max-width: 250px;
+}
+
+.header .grid-cell {
+  font-weight: bold;
+  background-color: #f0f0f0;
+  border-bottom: 2px solid #ccc;
+}
+
+.grid-row:not(.header):nth-child(even) .grid-cell {
+  background-color: #fafafa;
+}
+
+.grid-row:not(.header):hover .grid-cell {
+  background-color: #e6f7ff;
+}
+
+.checkbox-cell {
+  width: 36px;
+  text-align: center;
+}
+
+.actions-cell {
+  width: 1%;
+  white-space: nowrap;
+  text-align: right;
+}
+
+.truncate {
+  display: block;
+  max-width: 70ch;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.button-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}

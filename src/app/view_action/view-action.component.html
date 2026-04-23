@@ -1,0 +1,11 @@
+<div class="view-actions">
+  <button
+    mat-raised-button
+    color="primary"
+    *ngFor="let action of actions"
+    (click)="actionClick.emit(action)"
+  >
+    <mat-icon>{{ action.icon }}</mat-icon>
+    {{ action.label }}
+  </button>
+</div>

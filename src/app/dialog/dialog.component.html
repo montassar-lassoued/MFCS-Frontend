@@ -1,0 +1,134 @@
+<div class="dialog-root">
+  <h2 class="dialog-title">{{ data.action.label }}</h2>
+  <mat-dialog-content class="dialog-content">
+    <form [formGroup]="form" class="dialog-form">
+      <ng-container *ngFor="let field of Fields">
+        <!-- TEXT-LABEL -->
+        <div
+          *ngIf="field.meta.type === 'TEXT'"
+          class="dialog-field dialog-field--text"
+        >
+          <div class="dialog-label">
+            {{ field.label || field.field }}
+          </div>
+
+          <div class="dialog-text">
+            {{ field.field }}
+          </div>
+        </div>
+        <!-- TEXT-FIELD -->
+        <mat-form-field
+          *ngIf="field.meta.type === 'TEXT_FIELD'"
+          appearance="outline"
+          class="dialog-field"
+          floatLabel="always"
+        >
+          <mat-label>{{ field.label || field.field }}</mat-label>
+          <input [formControlName]="field.field" matInput/>
+        </mat-form-field>
+
+        <!-- EMAIL -->
+        <mat-form-field
+          *ngIf="field.meta.type === 'EMAIL'"
+          appearance="outline"
+          class="dialog-field"
+          floatLabel="always"
+        >
+          <mat-label>{{ field.label || field.field }}</mat-label>
+
+          <input [formControlName]="field.field" matInput required type="email"/>
+        </mat-form-field>
+
+        <!-- TEXT AREA -->
+        <mat-form-field
+          *ngIf="field.meta.type === 'TEXT_AREA'"
+          appearance="outline"
+          class="dialog-field"
+          floatLabel="always"
+        >
+          <mat-label>{{ field.label || field.field }}</mat-label>
+          <textarea [formControlName]="field.field" matInput rows="4"></textarea>
+        </mat-form-field>
+
+        <!-- NUMBER -->
+        <mat-form-field
+          *ngIf="field.meta.type === 'NUMBER' || field.meta.type === 'NUMBER_ANY'"
+          appearance="outline"
+          class="dialog-field"
+          floatLabel="always"
+        >
+          <mat-label>{{ field.label || field.field }}</mat-label>
+          <input
+            [formControlName]="field.field"
+            [step]="field.meta.type === 'NUMBER_ANY' ? 'any' : '1'"
+            matInput
+            required
+            type="number"/>
+        </mat-form-field>
+
+        <!-- CHECKBOX -->
+        <mat-checkbox
+          *ngIf="field.meta.type === 'CHECKBOX'"
+          [formControlName]="field.field"
+          class="dialog-checkbox"
+        >
+          {{ field.label || field.field }}
+        </mat-checkbox>
+
+        <!-- DATE -->
+        <mat-form-field
+          *ngIf="field.meta.type === 'DATE'"
+          appearance="outline"
+          class="dialog-field"
+          floatLabel="always"
+        >
+          <mat-label>{{ field.label || field.field }}</mat-label>
+          <input [formControlName]="field.field" matInput required type="date"/>
+        </mat-form-field>
+
+        <!-- DATETIME -->
+        <mat-form-field
+          *ngIf="field.meta.type === 'DATETIME'"
+          appearance="outline"
+          class="dialog-field"
+          floatLabel="always"
+        >
+          <mat-label>{{ field.label || field.field }}</mat-label>
+          <input [formControlName]="field.field" matInput required type="datetime-local"/>
+        </mat-form-field>
+
+        <!-- TIME -->
+        <mat-form-field
+          *ngIf="field.meta.type === 'TIME'"
+          appearance="outline"
+          class="dialog-field"
+          floatLabel="always"
+        >
+          <mat-label>{{ field.label || field.field }}</mat-label>
+          <input [formControlName]="field.field" matInput required type="time"/>
+        </mat-form-field>
+
+        <!-- COMBOBOX -->
+        <mat-form-field
+          *ngIf="field.meta.type === 'COMBOBOX'"
+          appearance="outline"
+          class="dialog-field"
+          floatLabel="always"
+        >
+          <mat-label>{{ field.label || field.field }}</mat-label>
+          <mat-select [formControlName]="field.field">
+            <mat-option *ngFor="let val of field.values" [value]="val">
+              {{ val }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </ng-container>
+    </form>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end" class="dialog-actions">
+    <button (click)="cancel()" mat-flat-button>Abbrechen</button>
+    <button (click)="save()" color="primary" mat-raised-button>
+      Speichern
+    </button>
+  </mat-dialog-actions>
+</div>

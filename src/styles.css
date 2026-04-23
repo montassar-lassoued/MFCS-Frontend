@@ -1,1 +1,118 @@
 /* You can add global styles to this file, and also import other style files */
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+.mat-typography{
+    font-family: system-ui, -apple-system, BlinkMacSystemFont,
+                              "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-size: 14px;
+      line-height: 20px;
+      font-weight: 400;
+  letter-spacing: .0178571429em;
+}
+
+.success-snackbar {
+  --mdc-snackbar-container-color: green !important;
+  --mdc-snackbar-supporting-text-color: white !important;
+  --mat-mdc-snack-bar-button-color: white !important;
+  white-space: pre-wrap;
+}
+
+.error-snackbar {
+  --mdc-snackbar-container-color: red !important;
+  --mdc-snackbar-supporting-text-color: white !important;
+  --mat-mdc-snack-bar-button-color: white !important;
+  white-space: pre-wrap;
+}
+
+.mdc-checkbox
+  .mdc-checkbox__native-control:enabled:not([data-indeterminate="true"])
+  ~ .mdc-checkbox__background {
+  background-color: transparent !important;
+  border-color: #207adb !important;
+  border-width: 1px;
+}
+
+.mat-mdc-checkbox .mdc-checkbox__checkmark-path {
+  stroke: #007bff;
+  stroke-width: 2px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.card-select-all label {
+  color: black;
+}
+/* ===============================
+   Native Checkbox im MDC-Look
+   =============================== */
+input.row-checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  width: 18px;
+  height: 18px;
+
+  border: 1px solid #207adb;
+  border-radius: 2px;
+
+  background-color: transparent;
+  cursor: pointer;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/* Hover */
+input.row-checkbox:hover {
+  border-color: #207adb;
+}
+
+/* Checked – KEIN Hintergrund */
+input.row-checkbox:checked {
+  background-color: transparent;
+}
+
+/* ✔ MDC-ähnlicher Haken */
+input.row-checkbox:checked::after {
+  content: "";
+  position: absolute;
+
+  width: 5px;
+  height: 10px;
+
+  border: solid #007bff;
+  border-width: 0 1px 1px 0;
+
+  transform: rotate(45deg);
+}
+
+/* Fokus (optional, sehr MDC-nah) */
+input.row-checkbox:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(32, 122, 219, 0.25);
+}
+.dialog-root {
+  /* Outline (Rahmen) */
+  --mdc-outlined-text-field-focus-outline-color: #207adb;
+  --mdc-outlined-text-field-focus-outline-width: 1px;
+
+  /* Label-Farbe */
+  --mdc-outlined-text-field-focus-label-text-color: #207adb;
+
+  /* Caret (Blinkcursor) */
+  --mdc-outlined-text-field-caret-color: #207adb;
+
+  --mdc-outlined-text-field-disabled-outline-color: #e5e7eb;
+  /* Hover (optional) */
+  /*--mdc-outlined-text-field-hover-outline-color: #207adb;*/
+
+}
+:root {
+  --mdc-protected-button-container-color: #18a2c2a3;
+}

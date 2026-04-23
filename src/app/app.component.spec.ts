@@ -14,16 +14,18 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have the 'Base_Pilot_UI' title`, () => {
+  it(`should have the 'IntraConnect_UI' title`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('Base_Pilot_UI');
+    expect(app.title).toEqual('IntraConnect_UI');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, Base_Pilot_UI');
+    expect(compiled.querySelector('h1')?.textContent).toContain(
+      'Hello, IntraConnect_UI',
+    );
   });
 });

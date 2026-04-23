@@ -1,0 +1,18 @@
+<div class="dialog-root">
+  <div class="dialog-header">
+    <mat-icon [ngClass]="data.icon">{{ iconMap[data.icon] }}</mat-icon>
+    <h2>{{ data.title }}</h2>
+  </div>
+
+  <div class="dialog-content">
+    {{ data.message }}
+  </div>
+
+  <div class="dialog-actions">
+    <button mat-button *ngIf="data.showCancel" (click)="close(false)">
+      Abbrechen
+    </button>
+
+    <button mat-raised-button color="primary" (click)="close(true)">OK</button>
+  </div>
+</div>
