@@ -1,48 +1,79 @@
 .subview-container {
   position: fixed;
-  bottom: 0;
-  left: 212px;
-  right: 16px;
-
+  bottom: 20px;
+  left: 230px; /* Platz für dein Seitenmenü */
+  right: 20px;
   max-height: 40vh;
   overflow-y: auto;
 
-  background-color: #fafafa;
-  border-top: 2px solid #ccc;
-  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.15);
-
-  padding: 16px;
+  /* Modernes Design */
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  border-radius: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.15);
+  padding: 24px;
   z-index: 1000;
 }
 
 .subview-header {
-  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 12px;
+}
+
+.subview-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.spacer { flex: 1; }
+
+.badge {
+  background: #f0f2f5;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  color: #666;
 }
 
 .subview-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
 }
 
-.field {
+.detail-item {
   display: flex;
   flex-direction: column;
+  gap: 4px;
 }
 
-.field label {
-  font-size: 12px;
-  font-weight: 600;
-  color: #444;
-  margin-bottom: 4px;
+.detail-item label {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: #888;
+  letter-spacing: 0.5px;
+  font-weight: 700;
 }
 
-.field input[type="text"] {
-  padding: 6px 8px;
-  background-color: #f3f3f3;
-  border: 1px solid #ccc;
+.value-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #2c3e50;
 }
 
-.field input[type="checkbox"] {
-  margin-top: 6px;
+.text-value {
+  word-break: break-all;
+  font-weight: 500;
 }
+
+/* Hilfsklassen */
+.text-success { color: #2ecc71; }
+.text-danger { color: #e74c3c; }
