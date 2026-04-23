@@ -1,10 +1,8 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-
-// Die Logik-Zentrale
 import { BaseViewComponent } from '../base-view-table-card/base-view.component';
 import { ViewActionsComponent } from '../view_action/view-action.component';
 import { TableDetailsComponent } from '../subView/table-details/table-details.component';
@@ -23,15 +21,15 @@ import { TableDetailsComponent } from '../subView/table-details/table-details.co
   ],
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  //changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TableComponent extends BaseViewComponent {
-  // KEIN Konstruktor nötig
-  // KEIN inject() für MenuService etc. nötig (kommt aus BaseViewComponent)
+export class TableComponent extends BaseViewComponent  {
 
   // Nur Tabellen-spezifische Getter oder Methoden
   get columns() {
-    return this.data().columns || [];
+    const currentData = this.data();
+        // Prüfen, ob meta vorhanden ist (das sind deine Spaltendefinitionen)
+        return currentData?.meta?.filter((m: any) => m.visible) || [];
   }
 
   // Falls du eine Methode überschrieben werden solls :

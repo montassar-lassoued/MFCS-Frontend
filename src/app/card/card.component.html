@@ -1,71 +1,58 @@
 <div class="view-wrapper">
-
-  @if (hasViewActions) {
   <app-view-actions
     (actionClick)="handleMainAction($event)"
     [actions]="data().viewActions">
   </app-view-actions>
-  }
 
   <div class="view-scroll">
-    @if (hasViewActions && data().rows.length > 0) {
-    <div class="card-select-all">
-      <mat-checkbox (change)="toggleAll($event)"> Alle auswählen</mat-checkbox>
+    <div *ngIf="hasViewActions && data().rows.length > 0" class="card-select-all">
+      <mat-checkbox (change)="toggleAll($event.checked)"> Alle auswählen</mat-checkbox>
     </div>
-    }
 
     <div class="card-container">
-      @for (card of data().rows; track card.id) {
-      <mat-card class="card">
+      <mat-card *ngFor="let card of data().rows" class="card">
 
         <div class="card-header">
-          @if (hasViewActions) {
           <mat-checkbox
+            *ngIf="hasViewActions"
             [(ngModel)]="card._selected"
             class="card-checkbox">
           </mat-checkbox>
-          }
 
           <span (click)="card._selected = !card._selected" class="card-title clickable">
-              {{ getCardTitle(card) }}
-            </span>
+            {{ getCardTitle(card) }}
+          </span>
         </div>
 
         <mat-divider></mat-divider>
 
         <mat-card-content class="card-content">
-          @for (col of cardColumns; track col.field) {
-          @if (col.field !== cardColumns[0]?.field) {
-          <div class="field-row">
-            <strong>{{ col.field }}:</strong>
+          <div *ngFor="let col of cardColumns">
+            <ng-container *ngIf="col !== cardColumns[0]">
+              <strong>{{ col.field }}:</strong>
 
-            @if (col.type === 'CHECKBOX') {
-            <input [(ngModel)]="card[col.field]" [disabled]="true" type="checkbox">
-            } @else {
-            <span>{{ card[col.field] }}</span>
-            }
+              <ng-container *ngIf="col.type === 'CHECKBOX'">
+                <input [(ngModel)]="card[col.field]" [disabled]="true" type="checkbox"/>
+              </ng-container>
+
+              <ng-container *ngIf="col.type !== 'CHECKBOX'">
+                {{ card[col.field] }}
+              </ng-container>
+            </ng-container>
           </div>
-          }
-          }
         </mat-card-content>
 
-        @if (hasDetailsActions) {
-        <mat-card-actions class="button-actions">
-          @for (action of data().detailsActions; track action.label) {
+        <mat-card-actions *ngIf="hasDetailsActions" class="button-actions">
           <button
             (click)="handleDetailsAction(action, card)"
+            *ngFor="let action of data().detailsActions"
             color="primary"
             mat-raised-button>
             <mat-icon>{{ action.icon }}</mat-icon>
             {{ action.label }}
           </button>
-          }
         </mat-card-actions>
-        }
       </mat-card>
-      } @empty {
-      <div class="empty-state">Keine Karten anzuzeigen.</div>
-      }
     </div>
   </div>
 </div>

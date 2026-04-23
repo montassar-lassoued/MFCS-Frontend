@@ -9,32 +9,40 @@ export class VisuStateService {
   public luEvent$ = new Subject<any>();
 
   connect() {
-    this.stompClient = new Client({
-      // SockJS-Fabrik
-      webSocketFactory: () => new SockJS('http://localhost:8080/ws-visu'),
+    // 1. WICHTIG: Wenn bereits verbunden oder im Verbindungsaufbau, brich ab!
+    if (this.stompClient?.active) {
+      console.log('STOMP: Bereits aktiv. Kein neuer Verbindungsaufbau nötig.');
+      return;
+    }
 
-      // STOMP Optionen für Stabilität
+    this.stompClient = new Client({
+      webSocketFactory: () => new SockJS('http://localhost:8080/ws-visu'),
       reconnectDelay: 5000,
       heartbeatIncoming: 4000,
       heartbeatOutgoing: 4000,
 
-      onConnect: () => {
-        // Hier den Typ IMessage hinzufügen!
-        this.stompClient?.subscribe('/topic/events', (msg: IMessage) => {
-          if (msg.body) {
-            this.luEvent$.next(JSON.parse(msg.body));
-          }
-        });
+      onConnect: (frame) => {
+        console.log('STOMP Connected: ' + frame);
+
+        // Nur subscriben, wenn wir wirklich verbunden sind
+        if (this.stompClient && this.stompClient.connected) {
+          // Wir speichern die Subscription nicht lokal, da wir nur ein Topic haben
+          this.stompClient.subscribe('/topic/events', (msg: IMessage) => {
+            if (msg.body) {
+              try {
+                this.luEvent$.next(JSON.parse(msg.body));
+              } catch (e) {
+                console.error('Parsing Error', e);
+              }
+            }
+          });
+        }
       },
-      onStompError: (frame) => {
-        console.error('Broker reported error: ' + frame.headers['message']);
-        console.error('Additional details: ' + frame.body);
-      }
+      // ... restlicher Code (onStompError, etc.)
     });
 
     this.stompClient.activate();
   }
-
   disconnect() {
     if (this.stompClient) {
       this.stompClient.deactivate();

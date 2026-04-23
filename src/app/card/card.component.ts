@@ -1,17 +1,14 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
-// Angular Material
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
-
-// Eigene Komponenten & Basisklasse
-import { BaseViewComponent } from '../base/base-view.component';
+import { TableMeta } from '../interface/field-Meta-definition';
 import { ViewActionsComponent } from '../view_action/view-action.component';
+import { BaseViewComponent } from '../base-view-table-card/base-view.component';
 
 @Component({
   selector: 'app-card',
@@ -33,10 +30,11 @@ import { ViewActionsComponent } from '../view_action/view-action.component';
 })
 export class CardComponent extends BaseViewComponent {
 
-  // Tabellen-spezifische Hilfsmittel (Getter)
-  get cardColumns() {
-    return this.data().columns || [];
-  }
+  get cardColumns(): TableMeta[] {
+      const currentData = this.data();
+      if (!currentData || !currentData.meta) return [];
+      return currentData.meta.filter((m: TableMeta) => m.visible);
+    }
 
   // Beispiel für eine card-spezifische Methode, die in der Base nichts zu suchen hat
   getCardTitle(card: any): string {

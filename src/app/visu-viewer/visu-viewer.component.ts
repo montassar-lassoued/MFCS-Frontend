@@ -6,6 +6,8 @@ import { Arrow } from '../domain/arrow.model';
 import { DataService } from '../services/data.service';
 import { Subscription } from 'rxjs';
 import { VisuStateService } from './visu-state-service.service';
+import { Subject, takeUntil } from 'rxjs';
+
 
 export interface LoadUnit {
   id: string;
@@ -24,6 +26,8 @@ export interface LoadUnit {
 })
 export class VisuViewerComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChildren('conveyorPath') pathRefs!: QueryList<ElementRef<SVGPathElement>>;
+
+  private destroy$ = new Subject<void>();
 private dataSubscription: Subscription = new Subscription();
   private animationId?: number; // Speichert die ID der Animation für den Stopp
   private isDestroyed = false; // Flag für die Schleife
@@ -53,7 +57,65 @@ private dataSubscription: Subscription = new Subscription();
     private visuService: VisuStateService
   ) {}
 
-  ngOnInit() {
+ngOnInit() {
+    // 1. Horche auf URL Änderungen
+    this.route.paramMap.pipe(takeUntil(this.destroy$)).subscribe(params => {
+      const menuName = params.get('menuName');
+      if (menuName) {
+        this.resetVisu(); // WICHTIG: Alles auf Null setzen beim Wechsel
+        this.loadVisuData();
+      }
+    });
+  }
+
+  private resetVisu() {
+    this.isDestroyed = false;
+    this.loadUnits = [];
+    if (this.animationId) {
+      cancelAnimationFrame(this.animationId);
+    }
+    // Wir trennen die Live-Events kurz, um sie gleich neu zu binden
+    // (Oder du lässt sie global, aber hier räumen wir intern auf)
+  }
+
+  private loadVisuData() {
+    this.dataService.data$.pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
+      if (res && res.visu) {
+        this.data = res;
+        this.rects = res.visu.rects || [];
+        this.arrows = res.visu.arrows || [];
+
+        // Das setTimeout ist okay für SVG, aber wir müssen die Subscriptions darin schützen
+        setTimeout(() => {
+          if (this.isDestroyed) return;
+
+          this.calculateAllLengths();
+          this.visuService.connect();
+
+          // LIVE EVENTS: Nur EINE Subscription, die wir vorher beenden
+          this.visuService.luEvent$.pipe(takeUntil(this.destroy$)).subscribe(ev => {
+            this.onBackendEvent(ev.type, ev.stationName, ev.luId, ev.direction);
+          });
+
+          this.startAnimationLoop();
+        }, 100);
+      }
+    });
+  }
+
+  ngOnDestroy() {
+    this.isDestroyed = true;
+    this.destroy$.next(); // Stoppt alle RxJS Subscriptions sofort
+    this.destroy$.complete();
+
+    if (this.animationId) {
+      cancelAnimationFrame(this.animationId);
+    }
+    this.visuService.disconnect();
+  }
+
+
+  /*ngOnInit() {
     const menuName = this.route.snapshot.paramMap.get('menuName');
 
     if (menuName) {
@@ -100,7 +162,7 @@ private dataSubscription: Subscription = new Subscription();
 
       // 3. WebSocket-Leitung kappen (spart Server-Ressourcen)
       this.visuService.disconnect();
-    }
+    }*/
 
   ngAfterViewInit() {
     this.calculateAllLengths();

@@ -5,6 +5,11 @@ import { MenuService } from '../menu/menu.service';
 import { DataService } from '../services/data.service';
 import { ViewActionService } from '../services/view-action.service';
 import { DialogComponent } from '../dialog/dialog.component';
+import { MatCheckboxChange } from '@angular/material/checkbox';
+import { HttpErrorResponse } from '@angular/common/http';
+import { ViewSingleCommand, ViewListCommand } from '../services/view-action.service'; // Adjust path if necessary
+import { MatDialogRef } from '@angular/material/dialog';
+import { DialogService } from '../messageBox/dialog-service.service';
 
 @Component({ template: '' })
 export abstract class BaseViewComponent implements OnInit {
@@ -15,31 +20,52 @@ export abstract class BaseViewComponent implements OnInit {
   protected dataService = inject(DataService);
   protected viewActionService = inject(ViewActionService);
   protected dialog = inject(MatDialog);
+  protected dialogService= inject(DialogService);
+
+  protected hasViewActions = false;
+  protected hasDetailsActions = false;
+
+  selectedRow: any = null;
 
   // Gemeinsame States
   menuName = '';
   data = signal<any>({ rows: [] });
   errorMessage = signal<string | null>(null);
 
-  ngOnInit(): void {
-    this.route.paramMap.subscribe(params => {
-      this.menuName = params.get('menuName') || '';
-      this.loadData();
-    });
-  }
+ public ngOnInit(): void {
+   this.route.paramMap.subscribe(params => {
+     this.menuName = params.get('menuName') || '';
+     this.loadData(); // Startet den asynchronen Aufruf
+   });
+ }
 
-  protected loadData(): void {
-    this.menuService.callMenu(this.menuName).subscribe({
-      next: (res) => {
-        this.data.set(res);
-        this.dataService.setData(res);
-      },
-      error: (err) => this.errorMessage.set(this.getServerErrorMessage(err))
-    });
-  }
+ protected loadData(): void {
+   this.menuService.callMenu(this.menuName).subscribe({
+     next: (res) => {
+       console.log('BaseViewComponent: Daten empfangen', res);
+
+       // 1. Daten im Signal setzen
+       this.data.set(res);
+       this.dataService.setData(res);
+
+       // 2. Logik ausführen, die von den Daten abhängt
+       // Jetzt ist res (und damit data()) befüllt!
+       this.hasViewActions = !!res?.viewActions?.filter((v: any) => v.id !== 'CREATE')?.length;
+       this.hasDetailsActions = !!res?.detailsActions?.length;
+
+       console.log('Actions berechnet:', {
+         view: this.hasViewActions,
+         details: this.hasDetailsActions
+       });
+     },
+     error: (err) => {
+       this.errorMessage.set(this.getServerErrorMessage(err));
+     }
+   });
+ }
 
   // Gemeinsame Dialog-Logik
-  openDialog(action: any, payload: any): void {
+  protected openDialog(action: any, payload: any): void {
     this.viewActionService.getData({ menu: this.menuName, action, payload }).subscribe(definition => {
       const dialogRef = this.dialog.open(DialogComponent, {
         data: { menu: this.menuName, action, fields: definition, row: payload }
@@ -51,20 +77,23 @@ export abstract class BaseViewComponent implements OnInit {
     });
   }
 
-  protected getServerErrorMessage(err: any): string {
-    if (err.status === 200) return 'OK';
-    return err.error || 'Ein Fehler ist aufgetreten';
-  }
-
   /* setzt / nimmt weg, alle Häkchen in der Tabelle  */
-    toggleAll(event: MatCheckboxChange): void {
+    /*protected toggleAll(event: MatCheckboxChange): void {
       const checked = event.checked;
-      this.data.rows.forEach((r: any) => (r._selected = checked));
+      this.data().rows.forEach((r: any) => (r._selected = checked));
+    }*/
+
+    protected toggleAll(isChecked: boolean): void {
+      console.log('Toggle all rows to:', isChecked);
+      const currentData = this.data();
+      if (currentData && currentData.rows) {
+        currentData.rows.forEach((r: any) => (r._selected = isChecked));
+      }
     }
 
     getSelectRows(): any[] {
       const selectedRows: any[] = [];
-      this.data.rows.forEach((r: any) => {
+      this.data().rows.forEach((r: any) => {
         if (r._selected === true) {
           const { actions, ...rest } = r; // actions ausschließen
           selectedRows.push(rest);
@@ -260,36 +289,7 @@ export abstract class BaseViewComponent implements OnInit {
       return true;
     }
 
-    //****************DIALOG************* */
-    openDialog(action: any, card: any): void {
-      console.log('Card -> openDialog', JSON.stringify(card));
-      this.viewActionService
-        .getData({
-          menu: this.menuName,
-          action: action,
-          payload: card,
-        })
-        .subscribe((definition) => {
-          console.log('definition -> openDialog', JSON.stringify(definition));
-          const dialogRef: MatDialogRef<DialogComponent, string> =
-            this.dialog.open(DialogComponent, {
-              data: {
-                menu: this.menuName,
-                action: action,
-                fields: definition, // JSON-Struktur
-                row: card, // vor-gelieferte Daten
-              },
-            });
-          dialogRef.afterClosed().subscribe((result) => {
-            if (result === 'OK') {
-              this.loadData();
-            }
-          });
-        });
-    }
-
-
-  private getServerErrorMessage(err: any): string {
+  protected getServerErrorMessage(err: any): string {
     if (err.status === 200 && err.name === 'HttpErrorResponse') {
       return 'OK'; // Wir behandeln den Parsing-Fehler von "OK" als Erfolg
     }
