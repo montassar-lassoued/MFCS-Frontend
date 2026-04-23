@@ -1,40 +1,44 @@
 <div class="side-menu">
-  <ng-container *ngFor="let m of menues">
-    <!-- GRUPPE (aufklappbar) -->
-    <div
-      (click)="toggle(m)"
-      *ngIf="m.menuTyp === 'group'"
-      [ngStyle]="{ background: 'linear-gradient(to bottom, #ffffff 0%, ' + m.color + ' 100%)' }"
-      class="menu-item"
-      style="cursor: pointer; padding: 5px"
-    >
-      {{ m.name }}
-      <span [class.expanded]="m.expanded" class="arrow"></span>
-      <!--      <span class="arrow">{{ m.expanded ? '▲' : '▼' }}</span>-->
-    </div>
+  @for (m of menues; track m.id) {
 
-    <!-- KINDER EINER GRUPPE -->
-    <div *ngIf="m.menuTyp === 'group' && m.expanded">
-      <div
-        (click)="onItemClick(c, $event)"
-        *ngFor="let c of m.children"
-        [ngStyle]="{ background: 'linear-gradient(to bottom, #ffffff 0%, ' + c.color + ' 100%)' }"
-        class="menu-item child"
-        style="padding: 5px 20px; cursor: pointer"
-      >
-        {{ c.name }}
-      </div>
-    </div>
+  @if (m.menuTyp === 'group') {
+  <div
+    (click)="toggle(m)"
+    [style.background]="'linear-gradient(to bottom, #ffffff 0%, ' + m.color + ' 100%)'"
+    class="menu-item group-header"
+    role="button"
+  >
+    <span class="menu-text">{{ m.name }}</span>
+    <span [class.expanded]="m.expanded" class="arrow"></span>
+  </div>
 
-    <!-- NORMALES ITEM -->
+  @if (m.expanded) {
+  <div class="children-container">
+    @for (c of m.children; track c.id) {
     <div
-      (click)="onItemClick(m, $event)"
-      *ngIf="m.menuTyp === 'item'"
-      [ngStyle]="{ background: 'linear-gradient(to bottom, #ffffff 0%, ' + m.color + ' 100%)' }"
-      class="menu-item"
-      style="cursor: pointer; padding: 5px"
+      (click)="onItemClick(c, $event)"
+      [style.background]="'linear-gradient(to bottom, #ffffff 0%, ' + c.color + ' 100%)'"
+      class="menu-item child"
     >
-      {{ m.name }}
+      {{ c.name }}
     </div>
-  </ng-container>
+    }
+  </div>
+  }
+  }
+
+  @else if (m.menuTyp === 'item') {
+  <div
+    (click)="onItemClick(m, $event)"
+    [style.background]="'linear-gradient(to bottom, #ffffff 0%, ' + m.color + ' 100%)'"
+    class="menu-item"
+    role="link"
+  >
+    {{ m.name }}
+  </div>
+  }
+
+  } @empty {
+  <p class="no-data">Keine Menüeinträge vorhanden.</p>
+  }
 </div>
