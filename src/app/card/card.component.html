@@ -32,7 +32,9 @@
               <strong>{{ col.field }}:</strong>
 
               <ng-container *ngIf="col.type === 'CHECKBOX'">
-                <input [(ngModel)]="card[col.field]" [disabled]="true" type="checkbox"/>
+                <label>
+                  <input [(ngModel)]="card[col.field]" [disabled]="true" type="checkbox"/>
+                </label>
               </ng-container>
 
               <ng-container *ngIf="col.type !== 'CHECKBOX'">
