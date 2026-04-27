@@ -11,6 +11,7 @@ import { ViewActionService } from '../services/view-action.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-dialog',
@@ -23,13 +24,16 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatSelectModule,
     MatButtonModule,
     MatCheckboxModule,
-    MatDialogModule
+    MatDialogModule,
+    MatIconModule
   ],
   templateUrl: './dialog.component.html',
   styleUrls: ['./dialog.component.css'],
 })
 export class DialogComponent implements OnInit {
   form!: FormGroup;
+  hide = true;
+
 
   constructor(
     private fb: FormBuilder,
@@ -125,4 +129,8 @@ get Fields(): FieldDefinition[] {
   cancel(): void {
     this.dialogRef.close('CANCEL');
   }
+// für Passwörter
+mask(value: string): string {
+      return value ? '•'.repeat(value.length) : '';
+    }
 }

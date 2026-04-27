@@ -9,7 +9,8 @@ export enum FieldType {
   TIME = 'TIME',
   COMBOBOX = 'COMBOBOX',
   EMAIL= 'EMAIL',
-  TEXT= 'TEXT'
+  TEXT= 'TEXT',
+  PASSWORD = 'PASSWORD',
 }
 
 export interface FieldMeta {

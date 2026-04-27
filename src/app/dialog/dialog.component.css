@@ -165,3 +165,23 @@ background: linear-gradient( 180deg, #f5f7fa, #e7e7e800);
     --mdc-protected-button-container-color: #207adb;
     --mdc-protected-button-label-text-color: #ffffff;
 }
+.password-field {
+  .visibility-toggle {
+    opacity: 0.6;
+    transition: opacity 0.2s ease, transform 0.15s ease;
+
+    &:hover {
+      opacity: 1;
+      transform: scale(1.05);
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+
+    mat-icon {
+      font-size: 20px;
+      color: black;
+    }
+  }
+}
