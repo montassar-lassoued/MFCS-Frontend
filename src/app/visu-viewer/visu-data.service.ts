@@ -21,7 +21,7 @@ export class VisuDataService {
             : (Array.isArray(a.waypoints) ? a.waypoints : [])
         }));
 
-        return { rects: data.rects, arrows: arrows };
+        return { rects: data.rects, arrows: arrows, aisles:data.aisles };
       })
     );
   }

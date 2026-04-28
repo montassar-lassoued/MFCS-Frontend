@@ -32,6 +32,22 @@
           {{ r.name }}
         </text>
       </g>
+      <g *ngFor="let aisle of aisles">
+        <rect [attr.height]="aisle.height"
+              [attr.width]="aisle.width"
+              [attr.x]="aisle.x"
+              [attr.y]="aisle.y"
+              class="aisle-track">
+        </rect>
+
+        <rect *ngIf="aisle.rbg"
+              [attr.height]="aisle.rbg.height"
+              [attr.width]="aisle.rbg.width"
+              [attr.x]="+aisle.x + (+aisle.width * +aisle.rbg.positionOffset) - (+aisle.rbg.width / 2)"
+              [attr.y]="+aisle.y + (+aisle.height / 2) - (+aisle.rbg.height / 2)"
+              class="rbg-unit">
+        </rect>
+      </g>
 
       <g *ngFor="let lu of loadUnits"
          [attr.transform]="'translate(' + getLUPosition(lu).x + ',' + getLUPosition(lu).y + ')'">
