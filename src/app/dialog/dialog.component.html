@@ -122,6 +122,34 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
+
+        <!-- PASSWORD-->
+        <mat-form-field
+          *ngIf="field.meta.type === 'PASSWORD'"
+          appearance="outline"
+          class="dialog-field password-field"
+          floatLabel="always"
+        >
+          <mat-label>{{ field.label || field.field }}</mat-label>
+
+          <input
+            [formControlName]="field.field"
+            [type]="hide ? 'password' : 'text'"
+            matInput
+          />
+
+          <button
+            (click)="hide = !hide"
+            [attr.aria-label]="hide ? 'Passwort anzeigen' : 'Passwort verbergen'"
+            class="visibility-toggle"
+            mat-icon-button
+            matSuffix
+            type="button"
+          >
+            <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+        </mat-form-field>
+
       </ng-container>
     </form>
   </mat-dialog-content>

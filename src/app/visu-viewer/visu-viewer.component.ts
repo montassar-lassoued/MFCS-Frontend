@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { RectShape } from '../domain/rectangle.model';
 import { Arrow } from '../domain/arrow.model';
+import { Aisle } from '../domain/aisle.model';
 import { DataService } from '../services/data.service';
 import { Subscription } from 'rxjs';
 import { VisuStateService } from './visu-state-service.service';
@@ -34,6 +35,7 @@ private dataSubscription: Subscription = new Subscription();
   data: any = { visu: [] };
   rects: RectShape[] = [];
   arrows: Arrow[] = [];
+  aisles: Aisle[] = [];
   loadUnits: LoadUnit[] = [];
 
   private pathLengths: { [key: string]: number } = {};
@@ -81,9 +83,11 @@ ngOnInit() {
   private loadVisuData() {
     this.dataService.data$.pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
       if (res && res.visu) {
+        console.log('loadVisuData: ', JSON.stringify(res.visu));
         this.data = res;
         this.rects = res.visu.rects || [];
         this.arrows = res.visu.arrows || [];
+        this.aisles = res.visu.aisles || [];
 
         // Das setTimeout ist okay für SVG, aber wir müssen die Subscriptions darin schützen
         setTimeout(() => {
@@ -113,56 +117,6 @@ ngOnInit() {
     }
     this.visuService.disconnect();
   }
-
-
-  /*ngOnInit() {
-    const menuName = this.route.snapshot.paramMap.get('menuName');
-
-    if (menuName) {
-      // SCHRITT 1: Statische Visu-Daten (Landkarte) via HTTP laden
-      this.dataService.data$?.subscribe((res: any) => {
-        if (res) {
-           this.data = res;
-          // Daten zuweisen (dein JSON-Format aus dem ersten Prompt)
-          this.rects = res.visu?.rects || [];
-          this.arrows = res.visu?.arrows || [];
-
-          console.log('Landkarte geladen:', this.rects.length, 'Stationen');
-
-          // SCHRITT 2: Längen der Pfade berechnen (wichtig für Animation)
-          // Wir nutzen setTimeout, damit das DOM (SVG) Zeit hat zu rendern
-          setTimeout(() => {
-            this.calculateAllLengths();
-
-            // SCHRITT 3: Jetzt erst die Live-Verbindung öffnen
-            this.visuService.connect();
-
-            // SCHRITT 4: Auf Live-Events (LUs) reagieren
-            this.visuService.luEvent$.subscribe(ev => {
-              console.log('visuService', JSON.stringify(ev));
-              this.onBackendEvent(ev.type, ev.stationName, ev.luId, ev.direction);
-            });
-
-            // SCHRITT 5: Animation starten
-            this.startAnimationLoop();
-          }, 100);
-        }
-      });
-    }
-  }
-
-    ngOnDestroy() {
-      // 1. Flag setzen, um Berechnungen sofort zu stoppen
-      this.isDestroyed = true;
-
-      // 2. Browser-Animation hart stoppen
-      if (this.animationId) {
-        cancelAnimationFrame(this.animationId);
-      }
-
-      // 3. WebSocket-Leitung kappen (spart Server-Ressourcen)
-      this.visuService.disconnect();
-    }*/
 
   ngAfterViewInit() {
     this.calculateAllLengths();

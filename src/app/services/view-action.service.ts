@@ -25,15 +25,15 @@ export class ViewActionService {
 
   // Für Einzelaktionen (EDIT, OPEN, oder Single-DELETE)
   executeSingle(cmd: ViewSingleCommand): Observable<any> {
-    return this.http.post(this.apiUrl_single, cmd, { responseType: 'text' });
+    return this.http.post(this.apiUrl_single, cmd);
   }
 
   // Für Massenaktionen (DELETE von mehreren, CONNECT, DISCONNECT)
   executeList(cmd: ViewListCommand): Observable<any> {
-    return this.http.post(this.apiUrl_list, cmd, { responseType: 'text' });
+    return this.http.post(this.apiUrl_list, cmd);
   }
 
   getData(cmd: ViewSingleCommand): Observable<any> {
-    return this.http.post(this.apiUrl_details, cmd, { responseType: 'text' });
+    return this.http.post(this.apiUrl_details, cmd);
   }
 }

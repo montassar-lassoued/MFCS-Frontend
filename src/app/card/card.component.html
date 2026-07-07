@@ -37,7 +37,11 @@
                 </label>
               </ng-container>
 
-              <ng-container *ngIf="col.type !== 'CHECKBOX'">
+              <ng-container *ngIf="col.type === 'PASSWORD'">
+                {{ mask(card[col.field]) }}
+              </ng-container>
+
+              <ng-container *ngIf="col.type !== 'CHECKBOX' && col.type !== 'PASSWORD'">
                 {{ card[col.field] }}
               </ng-container>
             </ng-container>

@@ -56,9 +56,16 @@
             <!--                  !col.editable-->
           </label>
 
+          <!-- PASSWORD -->
+          <span
+            *ngIf="col.type === 'PASSWORD'"
+            [title]="row[col.field]"
+            class="truncate">
+            {{ mask(row[col.field]) }}
+          </span>
           <!-- TEXT / NUMBER -->
           <span
-            *ngIf="col.type !== 'CHECKBOX'"
+            *ngIf="col.type !== 'CHECKBOX' && col.type !== 'PASSWORD'"
             [title]="row[col.field]"
             class="truncate"
           >

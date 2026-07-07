@@ -91,6 +91,10 @@ export abstract class BaseViewComponent implements OnInit {
       }
     }
 
+    protected mask(value: string): string {
+      return value ? '•'.repeat(value.length) : '';
+    }
+
     getSelectRows(): any[] {
       const selectedRows: any[] = [];
       this.data().rows.forEach((r: any) => {
@@ -177,8 +181,9 @@ export abstract class BaseViewComponent implements OnInit {
 
     this.viewActionService.executeList(cmd).subscribe({
       next: (res: any) => {
+        console.log(" this.viewActionService.executeList: ", res);
             // Erfolgspfad
-            if (res === 'OK') {
+            if (res && res.status === 'OK') {
               this.loadData();
             } else {
               // Falls Backend 200 OK schickt, aber im Body "ERROR" steht
@@ -214,8 +219,9 @@ export abstract class BaseViewComponent implements OnInit {
 
     this.viewActionService.executeSingle(cmd).subscribe({
      next: (res: any) => {
+       console.log(" this.viewActionService.executeList: ", res);
            // Erfolgspfad
-           if (res === 'OK') {
+           if (res && res.status === 'OK') {
              this.loadData();
            } else {
              // Falls Backend 200 OK schickt, aber im Body "ERROR" steht

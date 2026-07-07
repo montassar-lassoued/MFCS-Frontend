@@ -11,6 +11,8 @@ import { ViewActionService } from '../services/view-action.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
+import { DialogService } from '../messageBox/dialog-service.service';
 
 @Component({
   selector: 'app-dialog',
@@ -23,19 +25,23 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatSelectModule,
     MatButtonModule,
     MatCheckboxModule,
-    MatDialogModule
+    MatDialogModule,
+    MatIconModule
   ],
   templateUrl: './dialog.component.html',
   styleUrls: ['./dialog.component.css'],
 })
 export class DialogComponent implements OnInit {
   form!: FormGroup;
+  hide = true;
+
 
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<DialogComponent, string>,
     private viewActionService: ViewActionService,
     private snackBar: MatSnackBar, // Inject Snackbar
+    private dialogService: DialogService,
     @Inject(MAT_DIALOG_DATA)
     public data: {
       menu: string;
@@ -95,7 +101,6 @@ get Fields(): FieldDefinition[] {
      this.viewActionService.executeSingle(cmd).subscribe({
        next: (res: any) => {
          // Dieser Zweig wird nur bei Status 200-299 ausgeführt
-         console.log('Erfolg:', res);
          this.snackBar.open('✓ Daten erfolgreich gespeichert!', 'Schließen', {
            duration: 4000,
            panelClass: ['success-snackbar'],
@@ -103,20 +108,14 @@ get Fields(): FieldDefinition[] {
          this.dialogRef.close('OK');
        },
        error: (err: any) => {
-         // Hier landen 403, 406, 500 etc.
-         console.error('Fehler-Objekt:', err);
 
-         // Die Nachricht vom Backend steckt in err.error
-         // Falls das Backend keinen Text schickt, nutzen wir eine Fallback-Meldung
-         const errorMessage = typeof err.error === 'string'
-                              ? err.error
-                              : (err.statusText || 'Unbekannter Fehler');
-
-         this.snackBar.open(
-           'x Fehler: ' + errorMessage,
-           'Schließen',
-           { duration: 10000, panelClass: ['error-snackbar'] }
-         );
+         const message = this.getServerErrorMessage(err);
+         this.dialogService.showMessage(
+                        'Fehler',
+                        message, // Hier steht jetzt z.B. "Aktion für diesen Datensatz nicht erlaubt."
+                        'error',
+                        false
+                      );
        }
      });
    }
@@ -125,4 +124,25 @@ get Fields(): FieldDefinition[] {
   cancel(): void {
     this.dialogRef.close('CANCEL');
   }
+// für Passwörter
+  mask(value: string): string {
+      return value ? '•'.repeat(value.length) : '';
+    }
+
+   protected getServerErrorMessage(err: any): string {
+      if (err.status === 200 && err.name === 'HttpErrorResponse') {
+        return 'OK'; // Wir behandeln den Parsing-Fehler von "OK" als Erfolg
+      }
+
+      if (typeof err.error === 'string' && err.error.length > 0) {
+        return err.error;
+      }
+
+      switch (err.status) {
+        case 403: return 'Aktion nicht erlaubt (Berechtigungsfehler).';
+        case 500: return 'Interner Serverfehler.';
+        case 0:   return 'Server nicht erreichbar.';
+        default:  return `Fehler (${err.status}): ${err.statusText || 'Unbekannt'}`;
+      }
+    }
 }
